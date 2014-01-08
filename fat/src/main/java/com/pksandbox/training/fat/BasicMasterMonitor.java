@@ -18,6 +18,7 @@ public class BasicMasterMonitor {
 	private HistoryTracker historyTracker;
 	private Alerter messageAlerter;
 	private double caloriesBurned;
+	private boolean isGoalAchieved = false;
 
 	private FoodUpdate lastFoodUpdate;
 	private ActivityUpdate lastActivityUpdate;
@@ -71,6 +72,7 @@ public class BasicMasterMonitor {
 								foodUpdate.getCaloriesConsumed()));
 				lastFoodUpdate = foodUpdate;
 				caloriesBurned += foodUpdate.getCaloriesConsumed();
+				applyRule();
 			}
 		};
 		foodSubject.addObserver(foodObserver);
@@ -87,6 +89,7 @@ public class BasicMasterMonitor {
 								activityUpdate.getCaloriesBurned()));
 				lastActivityUpdate = activityUpdate;
 				caloriesBurned -= activityUpdate.getCaloriesBurned();
+				applyRule();
 			}
 		};
 		activitySubject.addObserver(activityObsever);
@@ -102,8 +105,39 @@ public class BasicMasterMonitor {
 								String.valueOf(userSettingsUpdate.getWeight()),
 								userSettingsUpdate.getTargetIntake()));
 				lastUserSettingsUpdate = userSettingsUpdate;
+				applyRule();
 			}
 		};
 		userSettingsSubject.addObserver(userSettingsObserver);
+	}
+
+	private void applyRule() {
+		double target = lastUserSettingsUpdate.getTargetIntake();
+
+		// if goal has already been achieved
+		if (isGoalAchieved) {
+			//we have fallen off our target
+			if (caloriesBurned < lastUserSettingsUpdate.getTargetIntake()) {
+				isGoalAchieved = false;
+				soundAlerter.alert("Failure Sound");
+				messageAlerter.alert("Off the target");
+				return;
+			}
+		}
+
+		if (caloriesBurned >= target) {
+			isGoalAchieved = true;
+			soundAlerter.alert("Failure Sound");
+			messageAlerter.alert("Goal fails");
+			return;
+		}
+		
+		if(caloriesBurned < target){
+			double targetToAchieve = 100 - (caloriesBurned/target) * 100;
+			soundAlerter.alert("Motivation Sound");
+			messageAlerter.alert("Onto the target");
+		}
+		
+		
 	}
 }

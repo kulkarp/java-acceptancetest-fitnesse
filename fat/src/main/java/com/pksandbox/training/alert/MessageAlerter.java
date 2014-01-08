@@ -3,7 +3,7 @@ package com.pksandbox.training.alert;
 public class MessageAlerter implements Alerter {
 	private String lastMessageDisplayed;
 	
-	public void Alert(String alert) {
+	public void alert(String alert) {
 		lastMessageDisplayed = alert;
 	}
 

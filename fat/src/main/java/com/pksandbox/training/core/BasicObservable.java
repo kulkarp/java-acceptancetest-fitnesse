@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BasicObservable <T> implements Subject<T>, Notifier<T>{
-	List<Observer<T>> observers = new ArrayList<Observer<T>>();
+	private List<Observer<T>> observers = new ArrayList<Observer<T>>();
 
 	public void notifyObservers(T update) {
 		for (Observer<T> observer : observers) {

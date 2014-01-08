@@ -3,7 +3,7 @@ package com.pksandbox.training.alert;
 public class SoundAlerter implements Alerter {
 	private String lastSoundPlayed; 
 	
-	public void Alert(String alert) {
+	public void alert(String alert) {
 		lastSoundPlayed = alert;
 	}
 
