@@ -1,23 +1,13 @@
 package com.pksandbox.training.fat.food;
 
-import com.pksandbox.training.core.Observer;
+import com.pksandbox.training.core.BasicObservable;
 
 
-public class BasicFoodMonitor implements FoodMonitor{
-
-	public void notifyObservers(FoodUpdate update) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void addObserver(Observer<FoodUpdate> observer) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void removeObserver(Observer<FoodUpdate> observer) {
-		// TODO Auto-generated method stub
-		
+public class BasicFoodMonitor extends
+BasicObservable<FoodUpdate> implements FoodMonitor{
+	
+	public void setInput(String foodConsumed, double caloriesConsumed){
+		notifyObservers(new FoodUpdate(foodConsumed, caloriesConsumed));
 	}
 
 }

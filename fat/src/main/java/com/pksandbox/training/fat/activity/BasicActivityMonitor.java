@@ -1,22 +1,11 @@
 package com.pksandbox.training.fat.activity;
 
-import com.pksandbox.training.core.Observer;
+import com.pksandbox.training.core.BasicObservable;
 
-public class BasicActivityMonitor implements ActivityMonitor{
+public class BasicActivityMonitor extends BasicObservable<ActivityUpdate>
+		implements ActivityMonitor {
 
-	public void addObserver(Observer<ActivityUpdate> observer) {
-		// TODO Auto-generated method stub
-		
+	public void setInput(String activityDescription, double caloriesBurned) {
+		notifyObservers(new ActivityUpdate(activityDescription, caloriesBurned));
 	}
-
-	public void removeObserver(Observer<ActivityUpdate> observer) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void notifyObservers(ActivityUpdate update) {
-		// TODO Auto-generated method stub
-		
-	}
-
 }
