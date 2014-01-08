@@ -17,7 +17,8 @@ public class BasicMasterMonitor {
 	private Observer<UserSettingsUpdate> userSettingsObserver;
 	private HistoryTracker historyTracker;
 	private Alerter messageAlerter;
-	
+	private double caloriesBurned;
+
 	private FoodUpdate lastFoodUpdate;
 	private ActivityUpdate lastActivityUpdate;
 	private UserSettingsUpdate lastUserSettingsUpdate;
@@ -42,7 +43,7 @@ public class BasicMasterMonitor {
 	public void setHistoryTracker(HistoryTracker historyTracker) {
 		this.historyTracker = historyTracker;
 	}
-	
+
 	public Alerter getMessageAlerter() {
 		return messageAlerter;
 	}
@@ -68,8 +69,8 @@ public class BasicMasterMonitor {
 						foodHistoricalUpdatePlaceHolder.format(
 								foodUpdate.getFoodConsumed(),
 								foodUpdate.getCaloriesConsumed()));
-				applyRules();
-
+				lastFoodUpdate = foodUpdate;
+				caloriesBurned += foodUpdate.getCaloriesConsumed();
 			}
 		};
 		foodSubject.addObserver(foodObserver);
@@ -84,8 +85,8 @@ public class BasicMasterMonitor {
 						activityHistoricalUpdatePlaceHolder.format(
 								activityUpdate.getActivityPerformed(),
 								activityUpdate.getCaloriesBurned()));
-				applyRules();
-
+				lastActivityUpdate = activityUpdate;
+				caloriesBurned -= activityUpdate.getCaloriesBurned();
 			}
 		};
 		activitySubject.addObserver(activityObsever);
@@ -100,13 +101,9 @@ public class BasicMasterMonitor {
 						userSettingHistoricalUpdatePlaceHolder.format(
 								String.valueOf(userSettingsUpdate.getWeight()),
 								userSettingsUpdate.getTargetIntake()));
-				applyRules();
+				lastUserSettingsUpdate = userSettingsUpdate;
 			}
 		};
 		userSettingsSubject.addObserver(userSettingsObserver);
-	}
-
-	private void applyRules() {
-		
 	}
 }
